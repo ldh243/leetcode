@@ -7,21 +7,19 @@
 
 class Solution:
     def averageOfLevels(self, root: TreeNode) -> List[float]:
-        stack, arr = [], []
-        stack.append(root)
-        print(root)
-        while stack:
-            avg = 0
-            length = len(stack)
-            print(stack)
-            for i in range(length):
-                if stack[0].val != None:
-                    avg += stack[0].val
-                if stack[0].left != None:
-                    stack.append(stack[0].left)
-                if stack[0].right != None:
-                    stack.append(stack[0].right)
-                stack.pop(0)
-            avg /= length
-            arr.append(avg)
+        queue, arr, count = [], [], []
+        queue.append([root, 0])
+        while queue:
+            cur, lev = queue.pop(0)
+            if not cur:
+                continue
+            if len(arr) <= lev:
+                arr.append(0)
+                count.append(0)
+            arr[lev] += cur.val
+            count[lev] += 1
+            queue.append([cur.left, lev + 1])
+            queue.append([cur.right, lev + 1])
+        for i in range(len(arr)):
+            arr[i] /= count[i]
         return arr
