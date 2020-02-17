@@ -1,12 +1,12 @@
-s = "00110011"
-count = [0] * len(s) * 2
-c0 = c1 = ans = 0
-count[len(s)] = 1
-for i in s:
-	if int(i): c1 += 1
-	else: c0 += 1
-	ans += count[c1-c0+len(s)]
-	count[c1-c0+len(s)] += 1
-	print(i, ans)
-print(count)
-print(ans)
+class Solution:
+    def countBinarySubstrings(self, s: str) -> int:
+        group, ans = [1], 0
+        for i in range(1, len(s)):
+            if s[i] != s[i-1]:
+                if len(group) >= 2:
+                    ans += min(group[-1], group[-2])
+                group.append(1)
+            else:
+                group[len(group)-1] += 1
+        if len(group) <= 1: return 0
+        return (ans + min(group[-1], group[-2]))
